@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="hello"
+        android:fontFamily="sans-serif-light"
+        android:textSize="100sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:text="ScreenIt helps you display your photos"
+        android:textColor="@android:color/darker_gray"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/arrow"
+        android:text="swipe to start"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>

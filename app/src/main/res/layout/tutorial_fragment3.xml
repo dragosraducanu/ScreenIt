@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <TextView
+        android:id="@+id/topTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="step 2"
+        android:fontFamily="sans-serif-light"
+        android:textSize="70sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:layout_centerInParent="true"
+        android:text="scan the displayed QR Code"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/darker_gray"/>
+    <Button
+        android:id="@+id/endTutorialBtn"
+        android:layout_below="@+id/middle"
+        android:layout_marginTop="10dp"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        style="@android:style/Widget.Button"
+        android:fontFamily="sans-serif-light"
+        android:textSize="20sp"
+        android:text="Got it"/>
+    <CheckBox
+        android:layout_alignParentBottom="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Don't display this tutorial again"
+        android:fontFamily="sans-serif-light"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"/>
+</RelativeLayout>

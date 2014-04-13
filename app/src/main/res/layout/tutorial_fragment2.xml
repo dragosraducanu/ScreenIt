@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
+
+    <TextView
+        android:id="@+id/topTitle"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="step 1"
+        android:fontFamily="sans-serif-light"
+        android:textSize="70sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:gravity="center"
+        android:fontFamily="sans-serif-light"
+        android:layout_centerInParent="true"
+        android:text="open the website below on your big screen"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/darker_gray"/>
+    <TextView
+        android:layout_below="@+id/middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="http://www.screenit.io"
+        android:fontFamily="sans-serif-light"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+</RelativeLayout>
