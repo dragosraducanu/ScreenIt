@@ -3,7 +3,6 @@ package com.dragos.screenit.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -69,9 +68,12 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         if(requestCode == 1){
             if(resultCode == RESULT_OK) {
                 ArrayList<String> paths = data.getStringArrayListExtra(Constants.IMAGE_PICKER_PATHS_EXTRA_KEY);
-                for(String p : paths) {
+                Intent slideshowIntent = new Intent(getBaseContext(), SlideshowActivity.class);
+                slideshowIntent.putStringArrayListExtra("paths", paths);
+                startActivity(slideshowIntent);
+                /*for(String p : paths) {
                     Log.w("paths", p);
-                }
+                }*/
             } else if(resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
             }

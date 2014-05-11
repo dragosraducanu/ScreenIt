@@ -21,6 +21,12 @@
         <activity android:name="com.dragos.androidfilepicker.library.ImagePickerActivity">
         </activity>
         <activity android:name=".TutorialActivity"></activity>
+        <activity android:name=".SlideshowActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
     </application>
 
 </manifest>
