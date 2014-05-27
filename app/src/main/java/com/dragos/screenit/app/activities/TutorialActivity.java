@@ -1,4 +1,4 @@
-package com.dragos.screenit.app;
+package com.dragos.screenit.app.activities;
 
 
 import android.os.Bundle;
@@ -11,7 +11,8 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-;
+;import com.dragos.screenit.app.R;
+import com.dragos.screenit.app.fragments.TutorialFragment;
 
 
 public class TutorialActivity extends FragmentActivity {

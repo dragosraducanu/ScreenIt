@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:id="@+id/container"
-    tools:context="com.dragos.screenit.app.MainActivity">
+    tools:context="com.dragos.screenit.app.activities.MainActivity">
 
 
     <TextView

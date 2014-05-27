@@ -1,4 +1,4 @@
-package com.dragos.screenit.app;
+package com.dragos.screenit.app.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import com.abhi.barcode.frag.libv2.IScanResultHandler;
 import com.abhi.barcode.frag.libv2.ScanResult;
 import com.dragos.androidfilepicker.library.Constants;
 import com.dragos.androidfilepicker.library.ImagePickerActivity;
+import com.dragos.screenit.app.R;
+import com.dragos.screenit.app.utils.SharedPreferencesUtils;
 import com.google.zxing.BarcodeFormat;
 
 import java.util.ArrayList;
@@ -24,8 +26,12 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*Intent tutorialIntent = new Intent(this, TutorialActivity.class);
-        startActivity(tutorialIntent);*/
+        if(SharedPreferencesUtils.isFirstLaunch(this)) {
+            Intent tutorialIntent = new Intent(this, TutorialActivity.class);
+            startActivity(tutorialIntent);
+            return;
+        }
+
         mBarcodeScannerFragment = (BarcodeFragment)getSupportFragmentManager().findFragmentById(R.id.scanFragment);
         mBarcodeScannerFragment.setScanResultHandler(this);
         mBarcodeScannerFragment.setDecodeFor(EnumSet.of(BarcodeFormat.QR_CODE));
@@ -37,7 +43,7 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
     public boolean onCreateOptionsMenu(Menu menu) {
         
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -46,10 +52,14 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        /*int id = item.getItemId();
+        int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        }*/
+        }
+        if(id == R.id.action_help) {
+            Intent tutorialIntent = new Intent(this, TutorialActivity.class);
+            startActivity(tutorialIntent);
+        }
         return super.onOptionsItemSelected(item);
     }
 

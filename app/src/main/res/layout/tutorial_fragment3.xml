@@ -39,6 +39,7 @@
         android:textSize="20sp"
         android:text="Got it"/>
     <CheckBox
+        android:id="@+id/dontShowTutorialAgain"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

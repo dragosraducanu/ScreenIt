@@ -59,10 +59,22 @@ public final class ImagePickerConfig {
             this.mFileTypes = fileTypes;
             return this;
         }
+
+        /**
+         * sets the display mode for the picker
+         * @param displayMode - can be Constants.DISPLAY_MODE_GRID_WITH_ALBUMS, DISPLAY_MODE_GRID_NO_ALBUMS,DISPLAY_MODE_LIST_WITH_ALBUMS or DISPLAY_MODE_LIST_NO_ALBUMS.
+         * @return this object in order to chain the config calls.
+         */
         public Builder displayMode(String displayMode) {
             this.mDisplayMode = displayMode;
             return this;
         }
+
+        /**
+         * sets whether multi selection is enabled or not
+         * @param multiSelect status of multi selection
+         * @return this object in order to chain the config calls.
+         */
         public Builder multiSelect(boolean multiSelect) {
             this.mMultiSelect = multiSelect;
             return this;
@@ -71,6 +83,11 @@ public final class ImagePickerConfig {
             initEmptyFieldsWithDefaultValues();
             return new ImagePickerConfig(this);
         }
+
+
+        /**
+         * Inits the picker with the default configuration.
+         */
         private void initEmptyFieldsWithDefaultValues(){
             if(this.mDisplayMode == null) {
                 this.mDisplayMode = Constants.DISPLAY_MODE_GRID_WITH_ALBUMS;
