@@ -13,6 +13,7 @@ import com.abhi.barcode.frag.libv2.ScanResult;
 import com.dragos.androidfilepicker.library.Constants;
 import com.dragos.androidfilepicker.library.ImagePickerActivity;
 import com.dragos.screenit.app.R;
+import com.dragos.screenit.app.server.Service;
 import com.dragos.screenit.app.utils.SharedPreferencesUtils;
 import com.google.zxing.BarcodeFormat;
 
@@ -66,6 +67,9 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
     @Override
     public void scanResult(ScanResult scanResult) {
         Toast.makeText(this, scanResult.getRawResult().getText(), Toast.LENGTH_LONG).show();
+
+        Service.getInstance().connect();
+
         startFilePicker();
     }
 
