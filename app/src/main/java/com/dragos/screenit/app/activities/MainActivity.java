@@ -66,7 +66,7 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
     @Override
     public void scanResult(ScanResult scanResult) {
-        int browserId = Integer.parseInt(scanResult.getRawResult().getText());
+        String browserId = scanResult.getRawResult().getText();
 
         Service.getInstance().connect(browserId);
 
@@ -85,6 +85,12 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
                 Intent slideshowIntent = new Intent(getBaseContext(), SlideshowActivity.class);
                 slideshowIntent.putStringArrayListExtra("paths", paths);
                 startActivity(slideshowIntent);
+
+                //TODO: upload images to storage using AsyncTask. After each image upload,
+                //TODO: use Service.getInstance().sendImagePathToServer(imgPath) to send the image to the browser.
+
+                Service.getInstance().sendImagePathToServer("https://i.imgur.com/U9ReO6a.jpg");
+
                 /*for(String p : paths) {
                     Log.w("paths", p);
                 }*/

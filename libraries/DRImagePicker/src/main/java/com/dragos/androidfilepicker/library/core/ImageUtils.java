@@ -87,7 +87,7 @@ public class ImageUtils {
     public static void displayThumb(Context context, String filePath, ImageSize size, ImageView into) {
         Picasso.with(context).load("file:///" + filePath)
                 .placeholder(R.drawable.loading)
-                .resize(size.width, size.height)
+                .resize(size.getWidth(), size.getHeight())
                 .centerCrop()
                 .into(into);
     }

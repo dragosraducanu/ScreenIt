@@ -31,11 +31,11 @@ public class Service implements IOCallback{
     }
 
     private SocketIO mSocket;
-    private int mId;
-    private int mBrowserId;
+    private String mId;
+    private String mBrowserId;
     private ImageSize mBrowserWindowSize;
 
-    public boolean connect(int browserId) {
+    public boolean connect(String browserId) {
         mBrowserId = browserId;
         try {
             mSocket = new SocketIO();
@@ -63,7 +63,7 @@ public class Service implements IOCallback{
 
     private void getIdFromServer(JSONObject _data){
         try {
-            mId = Integer.parseInt(_data.getString("id"));
+            mId = _data.getString("id");
         } catch (JSONException e){
             e.printStackTrace();
         }
@@ -71,6 +71,16 @@ public class Service implements IOCallback{
 
         //now would be a good time to ask the server to pair the clients
         pairClients();
+    }
+
+    public void sendImagePathToServer(String imagePath){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("img", imagePath);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        mSocket.emit(NodeEvent.PUSH_IMAGE_TO_BROWSER, json);
     }
 
     private void pairClients() {
@@ -84,6 +94,7 @@ public class Service implements IOCallback{
             return;
         }
         mSocket.emit(NodeEvent.PAIR_CLIENTS, json);
+
     }
     private void getBrowserSize(JSONObject _data){
         try {
@@ -91,6 +102,7 @@ public class Service implements IOCallback{
         }catch (JSONException e){
             e.printStackTrace();
         }
+        Log.w("service", "W: " + mBrowserWindowSize.getWidth());
     }
 
 
@@ -133,7 +145,7 @@ public class Service implements IOCallback{
         e.printStackTrace();
     }
 
-    public int getId(){
+    public String getId(){
         return this.mId;
     }
 
