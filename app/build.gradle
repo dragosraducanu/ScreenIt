@@ -28,5 +28,4 @@ dependencies {
     compile 'com.android.support:support-v4:+'
     compile 'com.google.zxing:core:3.0.0@jar'
     compile files('libs/barcodelib.jar')
-    compile 'io.socket:socket.io-client:0.2.1'
 }

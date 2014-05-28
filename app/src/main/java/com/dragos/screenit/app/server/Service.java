@@ -2,7 +2,7 @@ package com.dragos.screenit.app.server;
 
 import android.util.Log;
 
-import com.google.gson.JsonElement;
+import com.dragos.androidfilepicker.library.core.ImageSize;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,9 +32,11 @@ public class Service implements IOCallback{
 
     private SocketIO mSocket;
     private int mId;
+    private int mBrowserId;
+    private ImageSize mBrowserWindowSize;
 
-    public boolean connect() {
-
+    public boolean connect(int browserId) {
+        mBrowserId = browserId;
         try {
             mSocket = new SocketIO();
             mSocket.connect("http://46.214.74.147", this);
@@ -46,55 +48,96 @@ public class Service implements IOCallback{
     }
 
     private void sendClientTypeToServer() {
+
         JSONObject json = new JSONObject();
         try {
-            json.putOpt("type", "android");
+            json.put("type", "android");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        //send the client type to the server.
         mSocket.emit(NodeEvent.CLIENT_TYPE, json);
+        //also ask the server to generate and send an id for this device.
         mSocket.emit(NodeEvent.REQUEST_ID);
     }
 
-    private void getIdFromServer(JsonElement _data){
-        Log.w("service", "id from server is: " + _data.getAsInt());
+    private void getIdFromServer(JSONObject _data){
+        try {
+            mId = Integer.parseInt(_data.getString("id"));
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        Log.w("service", "id from server is: " + mId);
+
+        //now would be a good time to ask the server to pair the clients
+        pairClients();
     }
+
+    private void pairClients() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("androidID", mId);
+            json.put("browserID", mBrowserId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            //probably a good place to show the user an error message
+            return;
+        }
+        mSocket.emit(NodeEvent.PAIR_CLIENTS, json);
+    }
+    private void getBrowserSize(JSONObject _data){
+        try {
+            mBrowserWindowSize = new ImageSize(_data.getInt("width"), _data.getInt("height"));
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onDisconnect() {
-
+        Log.e("service", "onDisconnect");
     }
 
     @Override
     public void onConnect() {
-
+        Log.e("service", "onConnect");
     }
 
     @Override
     public void onMessage(String s, IOAcknowledge ioAcknowledge) {
+        Log.e("service", "onMessage");
+    }
+
+    @Override
+    public void onMessage(JSONObject jsonObject, IOAcknowledge ioAcknowledge) {
 
     }
 
     @Override
-    public void onMessage(JsonElement jsonElement, IOAcknowledge ioAcknowledge) {
-
-    }
-
-    @Override
-    public void on(String s, IOAcknowledge ioAcknowledge, JsonElement... jsonElements) {
+    public void on(String s, IOAcknowledge ioAcknowledge, Object... objects) {
+        Log.e("service", "event: " + s);
         if(s.equals(NodeEvent.REQUEST_CLIENT_TYPE)) {
-           sendClientTypeToServer();
+            sendClientTypeToServer();
         } else if(s.equals(NodeEvent.ID_GENERATED)) {
-            getIdFromServer(jsonElements[0]);
+            getIdFromServer((JSONObject) objects[0]);
+        } else if(s.equals(NodeEvent.SEND_BROWSER_SIZE)) {
+            getBrowserSize((JSONObject) objects[0]);
         }
     }
 
+
     @Override
     public void onError(SocketIOException e) {
-
+        Log.e("service", "onError");
+        e.printStackTrace();
     }
 
     public int getId(){
         return this.mId;
+    }
+
+    public ImageSize getBrowserWindowSize(){
+        return this.mBrowserWindowSize;
     }
 }

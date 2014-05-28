@@ -66,9 +66,9 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
     @Override
     public void scanResult(ScanResult scanResult) {
-        Toast.makeText(this, scanResult.getRawResult().getText(), Toast.LENGTH_LONG).show();
+        int browserId = Integer.parseInt(scanResult.getRawResult().getText());
 
-        Service.getInstance().connect();
+        Service.getInstance().connect(browserId);
 
         startFilePicker();
     }
