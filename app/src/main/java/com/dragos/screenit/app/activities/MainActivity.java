@@ -13,6 +13,7 @@ import com.abhi.barcode.frag.libv2.ScanResult;
 import com.dragos.androidfilepicker.library.Constants;
 import com.dragos.androidfilepicker.library.ImagePickerActivity;
 import com.dragos.screenit.app.R;
+import com.dragos.screenit.app.server.S3Uploader;
 import com.dragos.screenit.app.server.Service;
 import com.dragos.screenit.app.utils.SharedPreferencesUtils;
 import com.google.zxing.BarcodeFormat;
@@ -89,8 +90,18 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
                 //TODO: upload images to storage using AsyncTask. After each image upload,
                 //TODO: use Service.getInstance().sendImagePathToServer(imgPath) to send the image to the browser.
 
-                Service.getInstance().sendImagePathToServer("https://i.imgur.com/U9ReO6a.jpg");
+              //  Service.getInstance().sendImagePathToServer("https://i.imgur.com/U9ReO6a.jpg");
 
+                S3Uploader uploader = new S3Uploader(this, "AKIAJCPU6BGAQFE4LRSA", "TZRwpTUBljDz8yOFP0WVFgVJCkOF2NZn7wFT5dP3");
+
+                for (String p : paths) {
+
+
+
+
+                    uploader.startAsyncUpload(p);
+                    break;
+                }
                 /*for(String p : paths) {
                     Log.w("paths", p);
                 }*/
