@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,9 +48,13 @@ public class SlideshowActivity extends FragmentActivity {
 
 
         setupViewPager();
-        setupProgressBar();
         setupTransparentActionBar();
-        startUpload();
+
+        setupProgressBar(savedInstanceState);
+        if(savedInstanceState == null || !savedInstanceState.getBoolean("upload_started")) {
+            startUpload();
+        }
+
 
 
 
@@ -72,6 +77,13 @@ public class SlideshowActivity extends FragmentActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putBoolean("upload_started", true);
+        savedInstanceState.putBoolean("progress_bar_visible", mProgressBar.getVisibility() == View.VISIBLE);
     }
 
     public static void incrementProgress(){
@@ -120,20 +132,18 @@ public class SlideshowActivity extends FragmentActivity {
 
 
 
-    private void setupProgressBar(){
+    private void setupProgressBar(Bundle savedInstanceState){
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         int max = getIntent().getStringArrayListExtra("paths").size();
         mProgressBar.setMax(max);
         mProgressBar.setIndeterminate(false);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mProgressBar.getLayoutParams();
-        int aBarHeight = getActionBarHeight();
-        if(aBarHeight == -1) {
-            aBarHeight = 10;
-        }
-        params.height = aBarHeight;
 
-        mProgressBar.setLayoutParams(params);
-        mProgressBar.setVisibility(View.GONE);
+        if(savedInstanceState == null || !savedInstanceState.getBoolean("progress_bar_visible")) {
+            mProgressBar.setVisibility(View.GONE);
+        } else {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -159,6 +169,7 @@ public class SlideshowActivity extends FragmentActivity {
         actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#55000000")));
     }
     private void startUpload(){
+        Log.w("act", "starting upload");
         S3Uploader uploader = new S3Uploader(this, "AKIAJCPU6BGAQFE4LRSA", "TZRwpTUBljDz8yOFP0WVFgVJCkOF2NZn7wFT5dP3");
       /*  ArrayList<String> demoURLS = new ArrayList<String>();
         demoURLS.add("http://miriadna.com/desctopwalls/images/max/Ideal-landscape.jpg");

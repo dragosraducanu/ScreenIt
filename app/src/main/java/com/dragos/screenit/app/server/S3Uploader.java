@@ -84,13 +84,7 @@ public class S3Uploader {
         protected Void doInBackground(ArrayList<String>... paths) {
             for (String image : paths[0]) {
                 String uploadedURL = uploadImage(image);
-
                 publishProgress(uploadedURL);
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
             return null;
         }

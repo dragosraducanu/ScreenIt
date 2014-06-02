@@ -9,7 +9,6 @@
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/progressBarHeight"
-        android:progressDrawable="@drawable/progress_drawable"
         style="?android:attr/progressBarStyleHorizontal"/>
     <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
