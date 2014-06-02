@@ -5,10 +5,16 @@
     android:id="@+id/container"
     tools:context="com.dragos.screenit.app.activities.TutorialActivity"
     android:background="@android:color/black">
-
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/progressBarHeight"
+        android:progressDrawable="@drawable/progress_drawable"
+        style="?android:attr/progressBarStyleHorizontal"/>
     <android.support.v4.view.ViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/pager"
+        android:layout_below="@id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

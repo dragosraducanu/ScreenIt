@@ -3,6 +3,7 @@ package com.dragos.screenit.app.server;
 import android.util.Log;
 
 import com.dragos.androidfilepicker.library.core.ImageSize;
+import com.dragos.screenit.app.activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +18,10 @@ import io.socket.SocketIOException;
  */
 public class Service implements IOCallback{
 
+    public static final int CONNECTION_ACCEPTED = 1;
+    public static final int BAD_ID_ERROR = 2;
+    public static final int SERVER_UNREACHABLE_ERROR = 3;
+    public static final int UNDEFINED_ERROR = 4;
 
 
     private static Service instance = null;
@@ -41,6 +46,7 @@ public class Service implements IOCallback{
             mSocket = new SocketIO();
             mSocket.connect("http://46.214.74.147", this);
         } catch (Exception e){
+            MainActivity.getHandler().sendEmptyMessage(Service.SERVER_UNREACHABLE_ERROR);
             e.printStackTrace();
             return false;
         }
@@ -67,7 +73,6 @@ public class Service implements IOCallback{
         } catch (JSONException e){
             e.printStackTrace();
         }
-        Log.w("service", "id from server is: " + mId);
 
         //now would be a good time to ask the server to pair the clients
         pairClients();
@@ -83,6 +88,16 @@ public class Service implements IOCallback{
         mSocket.emit(NodeEvent.PUSH_IMAGE_TO_BROWSER, json);
     }
 
+    public void goToPageInBrowser(int page){
+        JSONObject json = new JSONObject();
+        try{
+            json.put("slideNum", page);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        mSocket.emit(NodeEvent.CHANGE_SLIDE_IN_BROWSER, json);
+    }
+
     private void pairClients() {
         JSONObject json = new JSONObject();
         try {
@@ -90,7 +105,6 @@ public class Service implements IOCallback{
             json.put("browserID", mBrowserId);
         } catch (JSONException e) {
             e.printStackTrace();
-            //probably a good place to show the user an error message
             return;
         }
         mSocket.emit(NodeEvent.PAIR_CLIENTS, json);
@@ -102,7 +116,11 @@ public class Service implements IOCallback{
         }catch (JSONException e){
             e.printStackTrace();
         }
-        Log.w("service", "W: " + mBrowserWindowSize.getWidth());
+        MainActivity.getHandler().sendEmptyMessage(Service.CONNECTION_ACCEPTED);
+    }
+
+    private void showBadBrowserAlert(){
+        MainActivity.getHandler().sendEmptyMessage(Service.BAD_ID_ERROR);
     }
 
 
@@ -135,13 +153,15 @@ public class Service implements IOCallback{
             getIdFromServer((JSONObject) objects[0]);
         } else if(s.equals(NodeEvent.SEND_BROWSER_SIZE)) {
             getBrowserSize((JSONObject) objects[0]);
+        } else if(s.equals(NodeEvent.BAD_BROWSER_ID)) {
+            showBadBrowserAlert();
         }
     }
 
 
     @Override
     public void onError(SocketIOException e) {
-        Log.e("service", "onError");
+        MainActivity.getHandler().sendEmptyMessage(Service.UNDEFINED_ERROR);
         e.printStackTrace();
     }
 

@@ -2,7 +2,7 @@ package com.dragos.screenit.app.server;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.view.View;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -10,10 +10,12 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 import com.dragos.androidfilepicker.library.core.ImageSize;
+import com.dragos.screenit.app.activities.SlideshowActivity;
 import com.dragos.screenit.app.utils.ImageUtils;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -49,35 +51,58 @@ public class S3Uploader {
     }
 
 
-    public void startAsyncUpload(String imgPath){
-        new UploaderTask().execute(imgPath);
+    public String uploadImage(String path){
+        ImageSize browserWindowSize = Service.getInstance().getBrowserWindowSize();
+        //resize image to fit browser window
+        String imgPath = ImageUtils.resizeImageAndSave(path, browserWindowSize, mContext);
+
+        String imgName = getFileName(imgPath);
+        PutObjectRequest por = new PutObjectRequest(S3_BUCKET, imgName, new File(imgPath));
+        mS3Client.putObject(por);
+
+        return getUploadedFileUrl(imgPath);
     }
 
-    private class UploaderTask extends AsyncTask<String, Void, String> {
-        private String mUploadedImageUrl = "";
+    public void startBatchAsyncUpload(ArrayList<String> paths, Context context){
+       BatchUploaderTask uploaderTask = new BatchUploaderTask();
+        uploaderTask.setContext(context);
+        uploaderTask.execute(paths);
+    }
+
+    private class BatchUploaderTask extends AsyncTask<ArrayList<String>, String, Void> {
+        private Context context;
+        public void setContext(Context _context){
+            this.context = _context;
+        }
         @Override
         protected void onPreExecute(){
-            super.onPreExecute();
+           SlideshowActivity.setProgressBarVisibility(View.VISIBLE);
+           super.onPreExecute();
         }
 
         @Override
-        protected String doInBackground(String... paths) {
-            ImageSize browserWindowSize = Service.getInstance().getBrowserWindowSize();
-            //resize image to fit browser window
-            String imgPath = ImageUtils.resizeImageAndSave(paths[0], browserWindowSize, mContext);
+        protected Void doInBackground(ArrayList<String>... paths) {
+            for (String image : paths[0]) {
+                String uploadedURL = uploadImage(image);
 
-            String imgName = getFileName(imgPath);
-            PutObjectRequest por = new PutObjectRequest(S3_BUCKET, imgName, new File(imgPath));
-            mS3Client.putObject(por);
-
-            return getUploadedFileUrl(imgPath);
+                publishProgress(uploadedURL);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
         }
         @Override
-        protected void onPostExecute(String res){
+        protected void onProgressUpdate(String... url){
+            Service.getInstance().sendImagePathToServer(url[0]);
+            SlideshowActivity.incrementProgress();
+        }
+        @Override
+        protected void onPostExecute(Void res){
             super.onPostExecute(res);
-            Service.getInstance().sendImagePathToServer(res);
-            Log.w("service", "image uploaded to: " + res);
-            Log.w("service", "image should be on page!!");
+            SlideshowActivity.setProgressBarVisibility(View.GONE);
         }
 
     }

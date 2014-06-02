@@ -2,9 +2,12 @@ package com.dragos.screenit.app.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.Toast;
 
 import com.abhi.barcode.frag.libv2.BarcodeFragment;
@@ -13,8 +16,8 @@ import com.abhi.barcode.frag.libv2.ScanResult;
 import com.dragos.androidfilepicker.library.Constants;
 import com.dragos.androidfilepicker.library.ImagePickerActivity;
 import com.dragos.screenit.app.R;
-import com.dragos.screenit.app.server.S3Uploader;
 import com.dragos.screenit.app.server.Service;
+import com.dragos.screenit.app.utils.AlertUtils;
 import com.dragos.screenit.app.utils.SharedPreferencesUtils;
 import com.google.zxing.BarcodeFormat;
 
@@ -23,10 +26,15 @@ import java.util.EnumSet;
 
 
 public class MainActivity extends FragmentActivity implements IScanResultHandler{
-    BarcodeFragment mBarcodeScannerFragment;
+
+
+
+    private BarcodeFragment mBarcodeScannerFragment;
+    private static Handler mConnectionHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_main);
         if(SharedPreferencesUtils.isFirstLaunch(this)) {
             Intent tutorialIntent = new Intent(this, TutorialActivity.class);
@@ -38,8 +46,33 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         mBarcodeScannerFragment.setScanResultHandler(this);
         mBarcodeScannerFragment.setDecodeFor(EnumSet.of(BarcodeFormat.QR_CODE));
 
+        mConnectionHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case Service.CONNECTION_ACCEPTED:
+                        startFilePicker();
+                        break;
+                    case Service.BAD_ID_ERROR:
+                        AlertUtils.showErrorDialog(MainActivity.this, MainActivity.this.getString(R.string.bad_id_error));
+                        break;
+                    case Service.SERVER_UNREACHABLE_ERROR:
+                        AlertUtils.showErrorDialog(MainActivity.this, MainActivity.this.getString(R.string.cannot_find_server));
+                        break;
+                    case Service.UNDEFINED_ERROR:
+                        AlertUtils.showErrorDialog(MainActivity.this, MainActivity.this.getString(R.string.undefined_error));
+                        break;
+                }
+            }
+        };
+
     }
 
+
+
+    public static Handler getHandler(){
+        return mConnectionHandler;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -71,7 +104,6 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
         Service.getInstance().connect(browserId);
 
-        startFilePicker();
     }
 
     private void startFilePicker(){
@@ -87,24 +119,6 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
                 slideshowIntent.putStringArrayListExtra("paths", paths);
                 startActivity(slideshowIntent);
 
-                //TODO: upload images to storage using AsyncTask. After each image upload,
-                //TODO: use Service.getInstance().sendImagePathToServer(imgPath) to send the image to the browser.
-
-              //  Service.getInstance().sendImagePathToServer("https://i.imgur.com/U9ReO6a.jpg");
-
-                S3Uploader uploader = new S3Uploader(this, "AKIAJCPU6BGAQFE4LRSA", "TZRwpTUBljDz8yOFP0WVFgVJCkOF2NZn7wFT5dP3");
-
-                for (String p : paths) {
-
-
-
-
-                    uploader.startAsyncUpload(p);
-                    break;
-                }
-                /*for(String p : paths) {
-                    Log.w("paths", p);
-                }*/
             } else if(resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
             }
