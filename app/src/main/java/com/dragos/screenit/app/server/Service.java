@@ -44,7 +44,7 @@ public class Service implements IOCallback{
         mBrowserId = browserId;
         try {
             mSocket = new SocketIO();
-            mSocket.connect("http://46.214.74.147", this);
+            mSocket.connect("http://beta.screenit.io/", this);
         } catch (Exception e){
             MainActivity.getHandler().sendEmptyMessage(Service.SERVER_UNREACHABLE_ERROR);
             e.printStackTrace();

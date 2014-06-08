@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -19,10 +20,8 @@ import com.dragos.screenit.app.R;
 import com.dragos.screenit.app.server.Service;
 import com.dragos.screenit.app.utils.AlertUtils;
 import com.dragos.screenit.app.utils.SharedPreferencesUtils;
-import com.google.zxing.BarcodeFormat;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
 
 public class MainActivity extends FragmentActivity implements IScanResultHandler{
@@ -44,7 +43,8 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
         mBarcodeScannerFragment = (BarcodeFragment)getSupportFragmentManager().findFragmentById(R.id.scanFragment);
         mBarcodeScannerFragment.setScanResultHandler(this);
-        mBarcodeScannerFragment.setDecodeFor(EnumSet.of(BarcodeFormat.QR_CODE));
+      //  mBarcodeScannerFragment.setDecodeFor(EnumSet.of(BarcodeFormat.QR_CODE));
+        mBarcodeScannerFragment.setUserVisibleHint(true);
 
         mConnectionHandler = new Handler() {
             @Override
@@ -52,6 +52,7 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
                 switch (msg.what) {
                     case Service.CONNECTION_ACCEPTED:
                         startFilePicker();
+                        setProgressBarIndeterminate(false);
                         break;
                     case Service.BAD_ID_ERROR:
                         AlertUtils.showErrorDialog(MainActivity.this, MainActivity.this.getString(R.string.bad_id_error));
@@ -100,11 +101,15 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
     @Override
     public void scanResult(ScanResult scanResult) {
+        Log.w("DBG", "onScanResult");
+        Log.w("DBG", "code scanned: " + scanResult.getRawResult().getText());
+        setProgressBarIndeterminate(true);
         String browserId = scanResult.getRawResult().getText();
-
         Service.getInstance().connect(browserId);
-
+        mBarcodeScannerFragment.restart();
     }
+
+
 
     private void startFilePicker(){
         Intent filePickerIntent = new Intent(getBaseContext(), ImagePickerActivity.class);
