@@ -40,12 +40,7 @@ public class TutorialActivity extends FragmentActivity {
 
         if(savedInstanceState != null) {
             mPager.setCurrentItem(savedInstanceState.getInt("current_page"), false);
-            Log.e("viewpager", savedInstanceState.getInt("current_page") + "");
         }
-
-        Log.e("viewpager", "onCreate");
-
-
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {

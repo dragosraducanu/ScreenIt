@@ -1,5 +1,6 @@
 package com.dragos.screenit.app.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 
 import com.dragos.screenit.app.R;
+import com.dragos.screenit.app.activities.MainActivity;
 import com.dragos.screenit.app.utils.SharedPreferencesUtils;
 
 /**
@@ -75,8 +77,12 @@ public class TutorialFragment extends Fragment {
             endTutorialBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    getActivity().finish();
                     SharedPreferencesUtils.setFirstTimeLaunch(getActivity(), !dontShowAgain.isChecked());
+                    Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
+                    mainActivityIntent.putExtra("skip_tutorial", true);
+                    startActivity(mainActivityIntent);
+                    getActivity().finish();
+
 
                 }
             });

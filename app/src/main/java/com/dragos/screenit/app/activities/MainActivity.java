@@ -35,9 +35,11 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_main);
-        if(SharedPreferencesUtils.isFirstLaunch(this)) {
+
+        if(shouldShowTutorial()) {
             Intent tutorialIntent = new Intent(this, TutorialActivity.class);
             startActivity(tutorialIntent);
+            finish();
             return;
         }
 
@@ -75,6 +77,12 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         return mConnectionHandler;
     }
 
+    private boolean shouldShowTutorial(){
+        if((getIntent() != null && getIntent().getBooleanExtra("skip_tutorial", false) == true)) {
+            return false;
+        }
+        return SharedPreferencesUtils.isFirstLaunch(this);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
