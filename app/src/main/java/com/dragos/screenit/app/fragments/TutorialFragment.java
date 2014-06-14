@@ -19,18 +19,25 @@ public class TutorialFragment extends Fragment {
 
     private View mRootView;
     private int mPage;
+    private String mBackgroundPath;
 
-
-
-    public TutorialFragment(){
+    public TutorialFragment() {
 
     }
+
     public TutorialFragment(int page) {
         this.mPage = page;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("page", mPage);
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
@@ -40,7 +47,9 @@ public class TutorialFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         int resId = R.layout.tutorial_fragment1;
-
+        if(savedInstanceState != null) {
+            mPage = savedInstanceState.getInt("page");
+        }
         switch (mPage) {
             case 0:
                 resId = R.layout.tutorial_fragment1;
@@ -48,14 +57,17 @@ public class TutorialFragment extends Fragment {
             case 1:
                 resId = R.layout.tutorial_fragment2;
                 break;
-            case 2: resId = R.layout.tutorial_fragment3;
+            case 2:
+                resId = R.layout.tutorial_fragment3;
                 break;
             default:
                 resId = R.layout.tutorial_fragment1;
                 break;
         }
         mRootView = inflater.inflate(resId, container, false);
-        if(mPage == 2) {
+
+
+        if (mPage == 2) {
 
             Button endTutorialBtn = (Button) mRootView.findViewById(R.id.endTutorialBtn);
             final CheckBox dontShowAgain = (CheckBox) mRootView.findViewById(R.id.dontShowTutorialAgain);
@@ -64,7 +76,6 @@ public class TutorialFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     getActivity().finish();
-
                     SharedPreferencesUtils.setFirstTimeLaunch(getActivity(), !dontShowAgain.isChecked());
 
                 }
@@ -72,4 +83,7 @@ public class TutorialFragment extends Fragment {
         }
         return mRootView;
     }
+
+
+
 }

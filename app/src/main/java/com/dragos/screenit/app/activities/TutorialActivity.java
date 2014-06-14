@@ -3,22 +3,28 @@ package com.dragos.screenit.app.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-;import com.dragos.screenit.app.R;
+import com.dragos.screenit.app.R;
 import com.dragos.screenit.app.fragments.TutorialFragment;
+
+import java.util.ArrayList;
+
+;
 
 
 public class TutorialActivity extends FragmentActivity {
     private static final int NUM_PAGES = 3;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
+    private ArrayList<String> mBackgroundPaths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +34,24 @@ public class TutorialActivity extends FragmentActivity {
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-        getActionBar().hide();
-    }
+        if(getActionBar() != null) {
+            getActionBar().hide();
+        }
 
+        if(savedInstanceState != null) {
+            mPager.setCurrentItem(savedInstanceState.getInt("current_page"), false);
+            Log.e("viewpager", savedInstanceState.getInt("current_page") + "");
+        }
+
+        Log.e("viewpager", "onCreate");
+
+
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("current_page", mPager.getCurrentItem());
+    }
     @Override
     public void onBackPressed() {
         if (mPager.getCurrentItem() == 0) {

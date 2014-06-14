@@ -11,7 +11,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:debuggable="false">
+        android:debuggable="true">
 
         <uses-sdk android:minSdkVersion="16"
             android:targetSdkVersion="19"/>
@@ -26,7 +26,10 @@
             </intent-filter>
         </activity>
         <activity android:name="com.dragos.androidfilepicker.library.ImagePickerActivity"></activity>
-        <activity android:name=".activities.TutorialActivity"></activity>
+        <activity android:name=".activities.TutorialActivity"
+            android:theme="@style/TutorialTheme">
+
+        </activity>
         <activity
             android:name=".activities.SlideshowActivity"
             android:parentActivityName=".activities.MainActivity">

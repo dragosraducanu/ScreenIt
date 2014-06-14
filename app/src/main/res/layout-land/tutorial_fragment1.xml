@@ -1,58 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/img4"/>
+        android:src="@drawable/img3"/>
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
         android:paddingLeft="20dp"
+        android:layout_marginRight="@dimen/tutorialMarginRight"
         android:paddingRight="20dp">
 
         <TextView
-            android:id="@+id/topTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:textColor="@android:color/white"
-            android:shadowColor="@android:color/black"
-            android:fontFamily="sans-serif-light"
-            android:text="step 1"
-            android:textSize="70sp" />
-
-        <TextView
-            android:id="@+id/middle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_centerInParent="true"
             android:fontFamily="sans-serif-light"
+            android:text="hello"
+            android:textColor="@android:color/white"
+            android:textSize="100sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
             android:gravity="center"
-            android:text="open the website below on your big screen"
+            android:text="ScreenIt helps you display your photos on a bigger screen"
             android:textColor="@android:color/white"
             android:textSize="30sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/middle"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:textColor="@android:color/white"
+            android:drawableRight="@drawable/arrow"
             android:fontFamily="sans-serif-light"
-            android:text="http://beta.screenit.io"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:text="swipe to start"
             android:textSize="20sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

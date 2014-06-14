@@ -4,17 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <ImageView
         android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/img5"/>
+        android:src="@drawable/img4"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        android:layout_marginRight="@dimen/tutorialMarginRight">
 
         <TextView
             android:id="@+id/topTitle"
@@ -23,10 +26,10 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:fontFamily="sans-serif-light"
-            android:text="step 2"
             android:textColor="@android:color/white"
             android:shadowColor="@android:color/black"
+            android:fontFamily="sans-serif-light"
+            android:text="step 1"
             android:textSize="70sp" />
 
         <TextView
@@ -37,34 +40,19 @@
             android:layout_centerInParent="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
+            android:text="open the website below on your big screen"
             android:textColor="@android:color/white"
-            android:shadowColor="@android:color/black"
-            android:text="scan the displayed QR Code"
             android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/endTutorialBtn"
-            style="@android:style/Widget.Button"
-            android:layout_width="100dp"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/middle"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif-light"
-            android:text="Got it"
-            android:textSize="20sp" />
-
-        <CheckBox
-            android:id="@+id/dontShowTutorialAgain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/dontShowTutorialBottomMargin"
+            android:layout_marginTop="20dp"
             android:textColor="@android:color/white"
-            android:shadowColor="@android:color/black"
             android:fontFamily="sans-serif-light"
-            android:text="Don't display this tutorial again"
+            android:text="http://beta.screenit.io"
             android:textSize="20sp" />
     </RelativeLayout>
 

@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        android:layout_marginRight="@dimen/tutorialMarginRight">
 
         <TextView
             android:id="@+id/topTitle"
@@ -60,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/dontShowTutorialBottomMargin"
+            android:layout_marginBottom="20dp"
             android:textColor="@android:color/white"
             android:shadowColor="@android:color/black"
             android:fontFamily="sans-serif-light"
