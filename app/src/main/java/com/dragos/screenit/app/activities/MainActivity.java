@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -19,6 +18,7 @@ import com.dragos.androidfilepicker.library.ImagePickerActivity;
 import com.dragos.screenit.app.R;
 import com.dragos.screenit.app.server.Service;
 import com.dragos.screenit.app.utils.AlertUtils;
+import com.dragos.screenit.app.utils.NetworkUtils;
 import com.dragos.screenit.app.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
@@ -45,7 +45,6 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
         mBarcodeScannerFragment = (BarcodeFragment)getSupportFragmentManager().findFragmentById(R.id.scanFragment);
         mBarcodeScannerFragment.setScanResultHandler(this);
-      //  mBarcodeScannerFragment.setDecodeFor(EnumSet.of(BarcodeFormat.QR_CODE));
         mBarcodeScannerFragment.setUserVisibleHint(true);
 
         mConnectionHandler = new Handler() {
@@ -98,7 +97,8 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            return true;
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
         }
         if(id == R.id.action_help) {
             Intent tutorialIntent = new Intent(this, TutorialActivity.class);
@@ -109,8 +109,16 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
     @Override
     public void scanResult(ScanResult scanResult) {
-        Log.w("DBG", "onScanResult");
-        Log.w("DBG", "code scanned: " + scanResult.getRawResult().getText());
+        if(!NetworkUtils.hasInternetConnection(this)) {
+            AlertUtils.showErrorDialog(this, getString(R.string.no_internet_connection));
+            mBarcodeScannerFragment.restart();
+            return;
+        }
+        if(!NetworkUtils.allowConnection(this)){
+            AlertUtils.showBlockedSettingsDialog(this, getString(R.string.settings_blocked_warning));
+            mBarcodeScannerFragment.restart();
+            return;
+        }
         setProgressBarIndeterminate(true);
         String browserId = scanResult.getRawResult().getText();
         Service.getInstance().connect(browserId);

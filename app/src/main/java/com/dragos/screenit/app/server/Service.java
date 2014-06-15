@@ -14,7 +14,7 @@ import io.socket.SocketIO;
 import io.socket.SocketIOException;
 
 /**
- * Created by dragos on 27.05.2014.
+ *Created by Raducanu Dragos (raducanu.dragos@gmail.com) on 27.05.2014.
  */
 public class Service implements IOCallback{
 

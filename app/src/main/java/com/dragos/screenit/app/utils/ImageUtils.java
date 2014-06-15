@@ -15,7 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by dragos on 29.05.2014.
+ *Created by Raducanu Dragos (raducanu.dragos@gmail.com) on 29.05.2014.
  */
 public class ImageUtils {
     public static final String IMAGES_FOLDER_NAME = "ScreenIt";

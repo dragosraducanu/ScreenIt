@@ -24,9 +24,11 @@ repositories {
 }
 
 dependencies {
+    compile 'com.android.support:support-v4:18.0.0'
+    compile 'com.google.zxing:core:3.0.0@jar'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:DRImagePicker')
-    compile 'com.android.support:support-v4:+'
-    compile 'com.google.zxing:core:3.0.0@jar'
+    
+    
     compile files('libs/barcodelib.jar')
 }

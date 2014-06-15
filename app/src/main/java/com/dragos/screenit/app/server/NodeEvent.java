@@ -1,7 +1,7 @@
 package com.dragos.screenit.app.server;
 
 /**
- * Created by dragos on 27.05.2014.
+ *Created by Raducanu Dragos (raducanu.dragos@gmail.com) on 27.05.2014.
  */
 public class NodeEvent {
     public static final String CONNECTION = "connection";

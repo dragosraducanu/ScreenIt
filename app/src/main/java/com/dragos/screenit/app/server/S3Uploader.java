@@ -12,6 +12,7 @@ import com.amazonaws.services.s3.model.ResponseHeaderOverrides;
 import com.dragos.androidfilepicker.library.core.ImageSize;
 import com.dragos.screenit.app.activities.SlideshowActivity;
 import com.dragos.screenit.app.utils.ImageUtils;
+import com.dragos.screenit.app.utils.PreferencesUtils;
 
 import java.io.File;
 import java.net.URL;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by dragos on 29.05.2014.
+ *Created by Raducanu Dragos (raducanu.dragos@gmail.com) on 29.05.2014.
  */
 public class S3Uploader {
     public static String S3_BUCKET = "screenit-eu-ireland-1";
@@ -54,7 +55,10 @@ public class S3Uploader {
     public String uploadImage(String path){
         ImageSize browserWindowSize = Service.getInstance().getBrowserWindowSize();
         //resize image to fit browser window
-        String imgPath = ImageUtils.resizeImageAndSave(path, browserWindowSize, mContext);
+        String imgPath = path;
+        if(PreferencesUtils.getOptimizeImages(mContext)) {
+            imgPath = ImageUtils.resizeImageAndSave(path, browserWindowSize, mContext);
+        }
 
         String imgName = getFileName(imgPath);
         PutObjectRequest por = new PutObjectRequest(S3_BUCKET, imgName, new File(imgPath));

@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="privacy"
+        android:title="@string/pref_title_privacy"></Preference>
+    <Preference
+        android:key="version"
+        android:title="@string/pref_title_version"></Preference>
+    <Preference
+        android:key="author"
+        android:title="@string/pref_title_author"
+        android:summary="Raducanu Dragos"></Preference>
+
+</PreferenceScreen>

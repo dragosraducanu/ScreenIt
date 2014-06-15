@@ -171,10 +171,6 @@ public class SlideshowActivity extends FragmentActivity {
     private void startUpload(){
         Log.w("act", "starting upload");
         S3Uploader uploader = new S3Uploader(this, "AKIAJCPU6BGAQFE4LRSA", "TZRwpTUBljDz8yOFP0WVFgVJCkOF2NZn7wFT5dP3");
-      /*  ArrayList<String> demoURLS = new ArrayList<String>();
-        demoURLS.add("http://miriadna.com/desctopwalls/images/max/Ideal-landscape.jpg");
-        demoURLS.add("http://ww1.prweb.com/prfiles/2013/11/11/11318192/Landscape%20Design%20Bergen%20County%20NJ.jpg");
-        demoURLS.add("http://www.w8themes.com/wp-content/uploads/2013/11/Free-Landscape-Wallpaper.jpg");*/
         ArrayList<String> imagePaths = getIntent().getStringArrayListExtra("paths");
         uploader.startBatchAsyncUpload(imagePaths, this);
     }
@@ -195,7 +191,7 @@ public class SlideshowActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+     //   getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

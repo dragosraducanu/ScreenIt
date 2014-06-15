@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+
+    <MultiSelectListPreference
+        android:key="connection_type"
+        android:title="@string/pref_title_connection_type"
+        android:entries="@array/pref_sync_connection_type_entries"
+        android:entryValues="@array/pref_sync_connection_type_values"
+        android:defaultValue="@array/pref_sync_connection_type_values"
+        android:summary="Mobile and WiFi"
+        android:negativeButtonText="Cancel"
+        android:positiveButtonText="OK" />
+
+    <SwitchPreference
+        android:key="allow_roaming"
+        android:title="@string/pref_title_allow_roaming"
+        android:summary="@string/pref_title_allow_roaming"
+        android:defaultValue="false" />
+
+</PreferenceScreen>
