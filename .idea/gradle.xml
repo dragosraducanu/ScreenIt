@@ -7,10 +7,10 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="G:\proj\screenit" />
-            <option value="G:\proj\screenit\app" />
-            <option value="G:\proj\screenit\libraries" />
-            <option value="G:\proj\screenit\libraries\DRImagePicker" />
+            <option value="E:\screenit-android" />
+            <option value="E:\screenit-android\app" />
+            <option value="E:\screenit-android\libraries" />
+            <option value="E:\screenit-android\libraries\DRImagePicker" />
           </set>
         </option>
       </GradleProjectSettings>

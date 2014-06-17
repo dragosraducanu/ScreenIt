@@ -30,6 +30,7 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
     private BarcodeFragment mBarcodeScannerFragment;
     private static Handler mConnectionHandler;
+    private boolean mFilePickerStarted = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +110,9 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
     @Override
     public void scanResult(ScanResult scanResult) {
+        if(mFilePickerStarted) {
+            return;
+        }
         if(!NetworkUtils.hasInternetConnection(this)) {
             AlertUtils.showErrorDialog(this, getString(R.string.no_internet_connection));
             mBarcodeScannerFragment.restart();
@@ -128,8 +132,10 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
 
 
     private void startFilePicker(){
+        mFilePickerStarted = true;
         Intent filePickerIntent = new Intent(getBaseContext(), ImagePickerActivity.class);
         startActivityForResult(filePickerIntent, 1);
+
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
@@ -143,6 +149,7 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
             } else if(resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
             }
+            mFilePickerStarted = false;
         }
     }
 }

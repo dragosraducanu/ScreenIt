@@ -17,11 +17,17 @@ public class PreferencesUtils {
     public static boolean getAllowWiFi(Context context){
         SharedPreferences prefs = getSharedPrefs(context);
         Set<String> stringSet = prefs.getStringSet("connection_type", null);
+        if(stringSet == null) {
+            return true;
+        }
         return stringSet.contains("1");
     }
     public static boolean getAllowMobile(Context context){
         SharedPreferences prefs = getSharedPrefs(context);
         Set<String> stringSet = prefs.getStringSet("connection_type", null);
+        if(stringSet == null) {
+            return true;
+        }
         return stringSet.contains("2");
     }
     public static boolean getOptimizeImages(Context context){
