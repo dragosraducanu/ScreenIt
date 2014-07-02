@@ -32,7 +32,7 @@ public class PreferencesUtils {
     }
     public static boolean getOptimizeImages(Context context){
         SharedPreferences prefs = getSharedPrefs(context);
-        return prefs.getBoolean("optimize_upload", false);
+        return prefs.getBoolean("optimize_upload", true);
     }
 
     public static SharedPreferences getSharedPrefs(Context context){

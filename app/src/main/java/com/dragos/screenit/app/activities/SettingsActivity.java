@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.dragos.screenit.app.R;
+import com.dragos.screenit.app.utils.Utils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -127,6 +128,7 @@ public class SettingsActivity extends PreferenceActivity {
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setupSimplePreferencesScreen();
+        Utils.sendScreenView(this, "Settings Activity");
     }
 
     @Override

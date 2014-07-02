@@ -26,9 +26,12 @@ public class TutorialFragment extends Fragment {
     public TutorialFragment() {
 
     }
-
-    public TutorialFragment(int page) {
-        this.mPage = page;
+    public static TutorialFragment newInstance(int page) {
+        TutorialFragment f = new TutorialFragment();
+        Bundle args = new Bundle();
+        args.putInt("page", page);
+        f.setArguments(args);
+        return f;
     }
 
     @Override
@@ -42,6 +45,10 @@ public class TutorialFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        Bundle args = getArguments();
+        if(args != null) {
+            mPage = args.getInt("page");
+        }
 
     }
 

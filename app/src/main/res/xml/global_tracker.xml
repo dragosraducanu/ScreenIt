@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="TypographyDashes">
+
+    <integer name="ga_sessionTimeout">300</integer>
+
+    <!-- Enable automatic Activity measurement -->
+    <bool name="ga_autoActivityTracking">true</bool>
+
+    <!-- The screen names that will appear in reports -->
+    <screenName name="com.dragos.screenit.app.activities.MainActivity">
+        MainActivity
+    </screenName>
+    <screenName name="com.dragos.screenit.app.activities.SettingsActivity">
+        SettingsActivity
+    </screenName>
+    <screenName name="com.dragos.screenit.app.activities.SlideshowActivity">
+        SlideshowActivity
+    </screenName>
+    <screenName name="com.dragos.screenit.app.activities.TutorialActivity">
+        TutorialActivity
+    </screenName>
+
+
+    <!--  The following value should be replaced with correct property id. -->
+    <string name="ga_trackingId">UA-661044-17</string>
+</resources>

@@ -1,5 +1,6 @@
 package com.dragos.screenit.app.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import com.dragos.screenit.app.server.Service;
 import com.dragos.screenit.app.utils.AlertUtils;
 import com.dragos.screenit.app.utils.NetworkUtils;
 import com.dragos.screenit.app.utils.SharedPreferencesUtils;
+import com.dragos.screenit.app.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -36,7 +38,7 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_main);
-
+        Utils.sendScreenView(this, "Main Activity");
         if(shouldShowTutorial()) {
             Intent tutorialIntent = new Intent(this, TutorialActivity.class);
             startActivity(tutorialIntent);
@@ -47,7 +49,7 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         mBarcodeScannerFragment = (BarcodeFragment)getSupportFragmentManager().findFragmentById(R.id.scanFragment);
         mBarcodeScannerFragment.setScanResultHandler(this);
         mBarcodeScannerFragment.setUserVisibleHint(true);
-
+        final Activity thiz = this;
         mConnectionHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -66,6 +68,7 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
                         AlertUtils.showErrorDialog(MainActivity.this, MainActivity.this.getString(R.string.undefined_error));
                         break;
                 }
+                Utils.sendEvent(thiz, "Connection", "connected", msg.what);
             }
         };
 
@@ -115,15 +118,18 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         }
         if(!NetworkUtils.hasInternetConnection(this)) {
             AlertUtils.showErrorDialog(this, getString(R.string.no_internet_connection));
+            Utils.sendEvent(this, "Scanner", "scan code", 0L);
             mBarcodeScannerFragment.restart();
             return;
         }
         if(!NetworkUtils.allowConnection(this)){
             AlertUtils.showBlockedSettingsDialog(this, getString(R.string.settings_blocked_warning));
+            Utils.sendEvent(this, "Scanner", "scan code", 0L);
             mBarcodeScannerFragment.restart();
             return;
         }
         setProgressBarIndeterminate(true);
+        Utils.sendEvent(this, "Scanner", "scan code", 1L);
         String browserId = scanResult.getRawResult().getText();
         Service.getInstance().connect(browserId);
         mBarcodeScannerFragment.restart();
@@ -142,11 +148,13 @@ public class MainActivity extends FragmentActivity implements IScanResultHandler
         if(requestCode == 1){
             if(resultCode == RESULT_OK) {
                 ArrayList<String> paths = data.getStringArrayListExtra(Constants.IMAGE_PICKER_PATHS_EXTRA_KEY);
+                Utils.sendEvent(this, "DRImagePicker", "images selected", paths.size());
                 Intent slideshowIntent = new Intent(getBaseContext(), SlideshowActivity.class);
                 slideshowIntent.putStringArrayListExtra("paths", paths);
                 startActivity(slideshowIntent);
 
             } else if(resultCode == RESULT_CANCELED) {
+                Utils.sendEvent(this, "DRImagePicker", "images selected", -1L);
                 Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();
             }
             mFilePickerStarted = false;

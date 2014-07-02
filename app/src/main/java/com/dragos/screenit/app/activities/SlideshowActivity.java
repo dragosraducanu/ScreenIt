@@ -26,6 +26,7 @@ import com.dragos.screenit.app.R;
 import com.dragos.screenit.app.fragments.SlideshowPageFragment;
 import com.dragos.screenit.app.server.S3Uploader;
 import com.dragos.screenit.app.server.Service;
+import com.dragos.screenit.app.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,7 @@ public class SlideshowActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         setContentView(R.layout.activity_slideshow);
-
+        Utils.sendScreenView(this, "Slideshow Activity");
 
 
 

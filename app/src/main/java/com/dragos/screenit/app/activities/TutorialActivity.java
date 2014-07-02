@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.dragos.screenit.app.R;
 import com.dragos.screenit.app.fragments.TutorialFragment;
+import com.dragos.screenit.app.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,8 @@ public class TutorialActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
+
+        Utils.sendScreenView(this, "Tutorial Activity");
 
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
@@ -86,7 +89,7 @@ public class TutorialActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return new TutorialFragment(position);
+            return TutorialFragment.newInstance(position);
         }
 
         @Override
